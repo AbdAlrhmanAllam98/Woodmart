@@ -8,7 +8,7 @@
         <div class="form-group">
             <label for="name">Name</label>
             <input type="text" name="name" value="{{old('name')}}" class="form-control">
-            <div class="@if($errors->has('name') ) alert alert-danger @endif">{{ $errors->first('name') }}</div>
+            <div class="@if($errors->get('name') ) alert alert-danger mt-2 @endif">{{ $errors->first('name') }}</div>
         </div>
         @include('user.form')
         <button type="submit" class="btn btn-success my-4 rounded-0">Register</button>

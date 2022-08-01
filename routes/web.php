@@ -23,18 +23,25 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [Controller::class,'index']);
 
 Route::view('register','user.register');
-Route::post('user/create',[UserController::class,'create']);
 Route::view('login','user.login');
-Route::post('user/login',[UserController::class,'login']);
 
-Route::get('product/{id}',[ProductController::class,'showProduct']);
+Route::controller(UserController::class)->group(function(){
+    Route::post('user/create','create');
+    Route::post('user/login','login');
+});
+Route::controller(ProductController::class)->group(function(){
+    Route::get('product/{id}','showProduct');
+});
 
 Route::middleware('auth_user')->group(function(){
-    Route::get('/add-cart/{id}',[CartController::class,'addToCart']);
-    Route::get('/cart',[CartController::class,'index']);
-    Route::get('/cart/delete/{id}',[CartController::class,'deleteCart']);
-
-    Route::get('/add-wishlist/{id}',[WishlistController::class,'addToWishlist']);
-    Route::get('/wishlist',[WishlistController::class,'index']);
-    Route::get('/wishlist/delete/{id}',[WishlistController::class,'deleteWishlist']);
+    Route::controller(CartController::class)->group(function(){
+        Route::get('/add-cart/{id}','addToCart');
+        Route::get('/cart','index');
+        Route::get('/cart/delete/{id}','deleteCart');
+    });
+    Route::controller(WishlistController::class)->group(function(){
+        Route::get('/add-wishlist/{id}','addToWishlist');
+        Route::get('/wishlist','index');
+        Route::get('/wishlist/delete/{id}','deleteWishlist');
+    });
 });
